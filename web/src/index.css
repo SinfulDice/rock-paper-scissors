@@ -1,0 +1,33 @@
+/* ===== Colors =====
+   Same dark theme as the portfolio (R35). Every color is a CSS variable, so the
+   rest of the CSS says var(--accent) instead of repeating #ff8a65 everywhere. */
+
+:root {
+  --bg: #14121f;
+  --surface: #211d33;
+  --text: #ece8f5;
+  --muted: #b8b0cf;
+  --accent: #ff8a65;
+  --on-accent: #14121f;
+  --accent-2: #7ee0c3;
+  --accent-3: #ffd166;
+  --border: #3a3354;
+  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color-scheme: dark;
+}
+
+/* ===== Base ===== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.5;
+}
