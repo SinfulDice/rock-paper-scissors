@@ -20,3 +20,7 @@
   `shared/normalize_cases.json` (made by `training/scripts/make_normalize_cases.py`) proves both match (R21).
   Decision added to SPEC R19: use MediaPipe world landmarks. Tests: web 31, Python 10, all passing.
 - Next: the `/collect` page (MediaPipe in the browser + recording, R28–R31).
+- `/collect` page: MediaPipe (`@mediapipe/tasks-vision` 1.1.0) served from our own site (model in
+  `web/public/models/`, wasm copied by `web/scripts/copy-mediapipe-wasm.mjs` on `npm install`).
+  Camera + errors (R18), hand choice (R19), skeleton, recorder (R29–R31), download. Web tests: 54 passing.
+  SPEC R28–R31 updated (keys 1–4, clear all, unsaved warning, noindex, files go to training/data/).

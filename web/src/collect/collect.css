@@ -1,0 +1,132 @@
+/* Styles of the collect page. Colors come from the variables in index.css. */
+
+.collect {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.privacy {
+  color: var(--muted);
+}
+
+/* Two columns on wide screens (video | panel), one column on narrow ones (R36). */
+.collect-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 800px) {
+  .collect-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* The video and the canvas sit exactly on top of each other. */
+.stage {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface);
+  aspect-ratio: 4 / 3;
+}
+.stage video,
+.stage canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* R10: mirror both, like a mirror. The recorded numbers are NOT mirrored: only the display is. */
+  transform: scaleX(-1);
+}
+.stage-status {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgb(20 18 31 / 0.8);
+  font-size: 0.9rem;
+}
+.rec {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #d32f2f;
+  color: #fff;
+  font-weight: bold;
+}
+
+.steps {
+  padding-left: 20px;
+  color: var(--muted);
+}
+
+.classes {
+  display: grid;
+  gap: 8px;
+}
+.class-button {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px;
+  text-align: left;
+}
+.class-button progress {
+  grid-column: 1 / -1;
+  width: 100%;
+  accent-color: var(--accent-2);
+}
+.class-button[aria-pressed='true'] {
+  border-color: var(--accent);
+  outline: 2px solid var(--accent);
+}
+.count {
+  color: var(--muted);
+}
+
+button {
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+.actions button:first-child {
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
+}
+.unsaved {
+  color: var(--accent-3);
+}
+
+kbd {
+  padding: 0 6px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+
+.camera-message {
+  padding: 16px 20px;
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  background: var(--surface);
+}

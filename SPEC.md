@@ -65,12 +65,15 @@ Each rule has a number (`R1`, `R2`…). Every v1 rule gets automated tests that 
 
 ## 5. Data collection page
 
-- **R28** A `/collect` page exists on the live site but is **not linked** from the game.
+- **R28** A `/collect` page exists on the live site but is **not linked** from the game
+  (and asks search engines not to list it).
 - **R29** On it, I choose a class, then **hold Space** to record samples (about 10 per second).
-  The number of samples per class is shown.
+  Keys **1–4** also choose the class. The number of samples per class is shown (with the ~200 goal).
+  "Clear all" deletes the recorded samples (after a confirmation), and the page warns before closing
+  if some samples were not downloaded.
 - **R30** A sample is recorded only if a hand is detected.
 - **R31** **Only landmark numbers are saved, never images.** The data is downloaded as a file (JSON) on my computer.
-  Nothing is uploaded.
+  Nothing is uploaded. Files go in `training/data/`; several files (several sessions) can be combined.
 - **R32** The dataset files contain no images, so they can go in the public repo.
 
 ## 6. "About the model" section

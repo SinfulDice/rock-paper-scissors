@@ -9,9 +9,11 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "postinstall": "node scripts/copy-mediapipe-wasm.mjs"
   },
   "dependencies": {
+    "@mediapipe/tasks-vision": "^1.1.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },
