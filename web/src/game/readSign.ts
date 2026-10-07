@@ -1,5 +1,5 @@
 // Turns the model's predictions around "Shoot!" into a decision: a sign, or "redo the round".
-import { CLASSES, type ModelClass, type Prediction, type Sign } from './signs'
+import { SIGNS, type Prediction, type Sign } from './signs'
 
 export const AVERAGE_WINDOW_MS = 300 // R5
 export const CONFIDENCE_THRESHOLD = 0.7 // R6
@@ -13,7 +13,7 @@ export interface Frame {
 
 export type Decision =
   | { kind: 'sign'; sign: Sign }
-  | { kind: 'redo'; reason: 'no-hand' | 'not-a-sign' | 'unsure' } // R7
+  | { kind: 'redo'; reason: 'no-hand' | 'unsure' } // R7
 
 // R5: averages the predictions of the frames in the last 300 ms before `shootTime`.
 // Returns null ("no hand") if a hand was seen in fewer than half of those frames.
@@ -24,22 +24,21 @@ export function averagePrediction(frames: Frame[], shootTime: number): Predictio
   const withHand = inWindow.filter((f) => f.prediction !== null)
   if (withHand.length === 0 || withHand.length < inWindow.length / 2) return null
 
-  const average = { rock: 0, paper: 0, scissors: 0, none: 0 }
+  const average = { rock: 0, paper: 0, scissors: 0 }
   for (const frame of withHand) {
-    for (const c of CLASSES) average[c] += frame.prediction![c] / withHand.length
+    for (const c of SIGNS) average[c] += frame.prediction![c] / withHand.length
   }
   return average
 }
 
-// R6 + R7: accept the most likely class only if it's a real sign with at least 70% confidence.
+// R6 + R7: accept the most likely sign only if its confidence is at least 70%.
 export function decide(prediction: Prediction | null): Decision {
   if (prediction === null) return { kind: 'redo', reason: 'no-hand' }
 
-  // Find the class with the highest confidence.
-  let best: ModelClass = CLASSES[0]
-  for (const c of CLASSES) if (prediction[c] > prediction[best]) best = c
+  // Find the sign with the highest confidence.
+  let best: Sign = SIGNS[0]
+  for (const c of SIGNS) if (prediction[c] > prediction[best]) best = c
 
-  if (best === 'none') return { kind: 'redo', reason: 'not-a-sign' }
   if (prediction[best] < CONFIDENCE_THRESHOLD) return { kind: 'redo', reason: 'unsure' }
   return { kind: 'sign', sign: best }
 }

@@ -16,8 +16,8 @@ Each rule has a number (`R1`, `R2`…). Every v1 rule gets automated tests that 
 - **R5** At "Shoot!" my sign is read. To avoid one bad video frame, the app averages the model's predictions
   over the last ~0.3 seconds before "Shoot!".
   If a hand was seen in fewer than half of those frames, it counts as "no hand" (R7).
-- **R6** A sign is accepted only if the top class is rock, paper or scissors **and** its confidence is **≥ 70%**.
-- **R7** If no hand is seen, the top class is "none", or confidence is < 70%, the round is **redone**:
+- **R6** A sign is accepted only if the top class has a confidence of **≥ 70%**.
+- **R7** If no hand is seen, or confidence is < 70%, the round is **redone**:
   a message says why (e.g. "I couldn't see your hand, try again"), and nobody gets a point.
 - **R8** The computer's move is **random** (each sign has a 1/3 chance), and it is chosen **without looking at my sign**.
 - **R9** When the match ends, the winner is announced. **"Play again"** resets the score and the round history.
@@ -26,7 +26,7 @@ Each rule has a number (`R1`, `R2`…). Every v1 rule gets automated tests that 
 
 - **R10** The webcam preview is shown **mirrored**, like a mirror.
 - **R11** The detected hand **skeleton** (21 points + lines) is drawn on top of the video, live.
-- **R12** **Live prediction bars** show the 4 classes (rock / paper / scissors / none) with their confidence in %.
+- **R12** **Live prediction bars** show the 3 classes (rock / paper / scissors) with their confidence in %.
 - **R13** The **score** (me vs computer) is always visible.
 - **R14** A **round history** lists each round: my sign, the computer's sign, the result (win / loss / tie).
   Redone rounds (R7) are not listed.
@@ -52,12 +52,20 @@ Each rule has a number (`R1`, `R2`…). Every v1 rule gets automated tests that 
   - points are **centered on the wrist** and **scaled by the hand size** (wrist → middle-finger knuckle = 1),
     so the position in the image and the distance to the camera don't matter.
 - **R21** The Python and TypeScript normalizations give **the same numbers** for the same input (a shared test file checks this).
-- **R22** My model has **4 classes**: rock, paper, scissors, **none** (a hand that isn't a valid sign).
+- **R22** My model has **3 classes**: rock, paper, scissors. Any hand is read as the nearest sign; the 70% threshold
+  (R6) is the only guard against unclear poses. (Changed 2026-10-07: a 4th class "none" was tried, but with too
+  little variety in its samples it confused the real signs. It may come back later, see L7.)
+  The `/collect` page can still record "none" samples; training ignores them in v1.
 - **R23** My model is a small neural network (an **MLP**) trained with **PyTorch**, exported to **ONNX**, and run in the
   browser with **ONNX Runtime Web**.
+  Training uses **data augmentation**: each epoch, the training samples are slightly rotated (up to ±15°) and get
+  a little random noise, so the model sees new variations of my poses and overfits less.
 - **R24** The ONNX model gives the same predictions as the PyTorch model on the same inputs (small tolerance).
 - **R25** Part of the data (about 20%) is kept aside as a **test set** that the model never trains on.
   A test **fails if accuracy on it is below 90%**. This is a safety alarm, not the goal.
+  The split keeps **blocks of ~20 consecutive samples** (~2 s) together, in training *or* test: samples
+  recorded 0.1 s apart are near-copies, and splitting them would make the test too easy ("data leakage").
+  About 20% of **each class** goes to the test ("stratified").
 - **R26** Dataset size: start with about **200 samples per class**. Record more if playing doesn't feel good,
   or stop earlier if it already does. The final call is how it feels while playing.
 - **R27** Training saves its results (accuracy, confusion matrix, samples per class) to a file that the website reads
@@ -110,3 +118,5 @@ Each rule has a number (`R1`, `R2`…). Every v1 rule gets automated tests that 
 - **L4** Sounds, with a mute button.
 - **L5** Light theme (and maybe the other portfolio themes).
 - **L6** Add the project to the portfolio ("Projects to show" #3).
+- **L7** Bring back a 4th class "none" if non-signs are too often read as signs while playing. Claude gives an
+  exact list of poses to record (clearly not signs, varied), then R6, R7, R12 and R22 are updated.

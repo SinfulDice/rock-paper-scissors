@@ -9,7 +9,15 @@ authors = [
 requires-python = ">=3.12"
 dependencies = [
     "numpy>=2.5.3",
+    "onnx>=1.23.2",
+    "onnxruntime>=1.30.0",
+    "onnxscript>=0.7.2",
+    "torch>=2.14.1",
 ]
+
+[project.scripts]
+# `uv run rps-train` runs the main() function of src/rps/train.py
+rps-train = "rps.train:main"
 
 [build-system]
 requires = ["uv_build>=0.12.23,<0.13.0"]
@@ -19,3 +27,13 @@ build-backend = "uv_build"
 dev = [
     "pytest>=9.1.1",
 ]
+
+# PyTorch: use the CPU-only version (~200 MB instead of ~2 GB with the GPU parts).
+# Our model is tiny, it trains in seconds on a normal processor.
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu" }]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true

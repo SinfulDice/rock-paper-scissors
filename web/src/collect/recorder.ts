@@ -1,14 +1,14 @@
 // The rules of the collect page, without any camera or React, so they're easy to test.
 import type { TrackedHand } from '../ai/handTracker'
 import type { Handedness, Point } from '../ai/normalize'
-import type { ModelClass } from '../game/signs'
+import type { RecordLabel } from '../game/signs'
 
 export const SAMPLE_INTERVAL_MS = 100 // R29: at most 1 sample every 100 ms = about 10 per second
 
 // One training example: what you were showing (the label) + the raw hand points.
 // R31: only numbers and labels, never an image.
 export interface Sample {
-  label: ModelClass
+  label: RecordLabel
   handedness: Handedness
   points: Point[]
 }
@@ -23,7 +23,7 @@ export const emptyRecorder: RecorderState = { samples: [], lastRecordTime: null 
 // What happens on each video frame. Returns the same state if nothing is recorded.
 export function onFrame(
   state: RecorderState,
-  frame: { recording: boolean; label: ModelClass; hand: TrackedHand | null; now: number },
+  frame: { recording: boolean; label: RecordLabel; hand: TrackedHand | null; now: number },
 ): RecorderState {
   if (!frame.recording) return state // Space isn't held
   if (frame.hand === null) return state // R30: no hand, nothing to record
@@ -39,8 +39,8 @@ export function onFrame(
   return { samples: [...state.samples, sample], lastRecordTime: frame.now }
 }
 
-// How many samples of each class, e.g. { rock: 210, paper: 0, scissors: 0, none: 3 }.
-export function countByClass(samples: Sample[]): Record<ModelClass, number> {
+// How many samples of each label, e.g. { rock: 210, paper: 0, scissors: 0, none: 3 }.
+export function countByClass(samples: Sample[]): Record<RecordLabel, number> {
   const counts = { rock: 0, paper: 0, scissors: 0, none: 0 }
   for (const s of samples) counts[s.label]++
   return counts

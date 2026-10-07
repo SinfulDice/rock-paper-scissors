@@ -1,0 +1,39 @@
+{
+  "classes": [
+    "rock",
+    "paper",
+    "scissors"
+  ],
+  "trainedAt": "2026-10-07T09:07:01+00:00",
+  "samples": {
+    "train": {
+      "rock": 166,
+      "paper": 199,
+      "scissors": 166
+    },
+    "test": {
+      "rock": 40,
+      "paper": 40,
+      "scissors": 49
+    }
+  },
+  "trainAccuracy": 1.0,
+  "testAccuracy": 0.9922,
+  "confusionMatrix": [
+    [
+      40,
+      0,
+      0
+    ],
+    [
+      0,
+      40,
+      0
+    ],
+    [
+      0,
+      1,
+      48
+    ]
+  ]
+}

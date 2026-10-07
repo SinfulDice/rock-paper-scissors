@@ -6,7 +6,7 @@ import { drawHand } from '../ai/drawHand'
 import { createHandTracker, pickHand } from '../ai/handTracker'
 import { cameraErrorKind, openCamera, type CameraError } from '../camera/camera'
 import { CameraMessage } from '../camera/CameraMessage'
-import { CLASSES, type ModelClass } from '../game/signs'
+import { RECORD_LABELS, type RecordLabel } from '../game/signs'
 import { downloadText } from './download'
 import {
   countByClass,
@@ -18,11 +18,11 @@ import {
 } from './recorder'
 
 const GOAL_PER_CLASS = 200 // R26: a target to aim for, not a hard rule
-const LABELS: Record<ModelClass, string> = {
+const LABELS: Record<RecordLabel, string> = {
   rock: '✊ Rock',
   paper: '✋ Paper',
   scissors: '✌️ Scissors',
-  none: '🤷 None',
+  none: '🤷 None (not used in v1)',
 }
 const CLASS_KEYS = ['Digit1', 'Digit2', 'Digit3', 'Digit4'] // keys 1–4 choose a class
 
@@ -33,19 +33,19 @@ export function CollectPage() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const recorder = useRef<RecorderState>(emptyRecorder)
   const recordingRef = useRef(false)
-  const labelRef = useRef<ModelClass>('rock')
+  const labelRef = useRef<RecordLabel>('rock')
 
   // useState = values shown on screen: changing them re-renders the page.
   const [status, setStatus] = useState<'loading' | 'ready' | 'model-error'>('loading')
   const [cameraError, setCameraError] = useState<CameraError | null>(null)
-  const [label, setLabelState] = useState<ModelClass>('rock')
+  const [label, setLabelState] = useState<RecordLabel>('rock')
   const [recording, setRecordingState] = useState(false)
   const [handVisible, setHandVisible] = useState(false)
   const [counts, setCounts] = useState(countByClass([]))
   const [savedCount, setSavedCount] = useState(0) // how many samples were in the last download
 
   // Each of these updates both the ref (for the video loop) and the state (for the screen).
-  function setLabel(l: ModelClass) {
+  function setLabel(l: RecordLabel) {
     labelRef.current = l
     setLabelState(l)
   }
@@ -133,7 +133,7 @@ export function CollectPage() {
         setRecording(true)
       }
       const i = CLASS_KEYS.indexOf(e.code)
-      if (i !== -1) setLabel(CLASSES[i])
+      if (i !== -1) setLabel(RECORD_LABELS[i])
     }
     function onKeyUp(e: KeyboardEvent) {
       if (e.code === 'Space') {
@@ -216,7 +216,7 @@ export function CollectPage() {
             </ol>
 
             <div className="classes">
-              {CLASSES.map((c, i) => (
+              {RECORD_LABELS.map((c, i) => (
                 <button
                   key={c}
                   type="button"
