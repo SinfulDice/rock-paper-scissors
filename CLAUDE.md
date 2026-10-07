@@ -17,8 +17,7 @@ He is looking for an alternance as **Full Stack** or **Data & AI** developer. Th
 ## Status (end of 2026-10-07 session)
 - **SPEC.md approved** (R1–R42 + L1–L7). Read it first. Changed today with his OK: 3 classes, no "none"
   (R6, R7, R12, R22), augmentation (R23), block split against data leakage (R25).
-- **Git:** 2 commits (setup, /collect page). **The training work is NOT committed yet**: I asked, he hadn't
-  answered when the session ended → ask him first thing next session (it includes `training/data/`, R32).
+- **Git:** 3 commits (setup, /collect page, training). Everything committed. Not pushed, no GitHub repo yet.
 - **Done:**
   - `web/` (Vite + React 19 + TS, Vitest + Testing Library + jsdom, oxlint; portfolio dark colors).
     Game logic in `web/src/game/` (match rules, computer move, `readSign` = average + 70% threshold).

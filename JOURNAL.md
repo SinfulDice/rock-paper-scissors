@@ -38,4 +38,4 @@
   Old "none" removed from the copies of sessions 1–2 (originals still in Downloads); session 3 kept for L7.
 - Result: **99.2%** test accuracy (93–100% over 4 splits). Python 36 tests, web 54 tests, all passing.
 - Next: the game screen (live predictions in the browser with onnxruntime-web, countdown, score…).
-- End of session. Training work not committed yet (ask him next time). Status for next time in CLAUDE.md.
+- End of session. Training work committed (he said yes). Status for next time in CLAUDE.md.
