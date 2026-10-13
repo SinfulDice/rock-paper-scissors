@@ -65,3 +65,10 @@
     Expected with 3 classes (R22). Decision: no "none" class (L7) for now, he keeps watching while playing.
     Idea: mention these limits on the "About the model" page (R33).
   - Game screen committed (he said yes).
+- Before going public: checked every tracked file (no secrets, commits use the GitHub noreply email,
+  data = numbers only). He chose to keep CLAUDE.md public ("I won't lie about using AI").
+- Added `README.md` (pipeline, results, limits, how it was built, credits: MediaPipe model is Apache 2.0
+  per Google's model card) and `.github/workflows/deploy.yml` (R41: Python tests, lint, web tests, build,
+  then deploy to Pages only if all pass). CI steps checked in a fresh clone; production build checked
+  with `vite preview` (he played a round: works).
+- Created the public repo SinfulDice/rock-paper-scissors and pushed (he said yes).
