@@ -13,12 +13,15 @@ Each rule has a number (`R1`, `R2`…). Every v1 rule gets automated tests that 
 - **R3** A tie gives no point to anyone. It doesn't count toward the 3 wins, and the match continues.
 - **R4** A round starts when I click **"Play"** (or press **Space**). A countdown shows **"3", "2", "1", "Shoot!"**,
   about **1 second per step**.
+  (Added 2026-10-13: "Play" and Space do nothing during the countdown; when the match is over, "Play" is
+  replaced by "Play again".)
 - **R5** At "Shoot!" my sign is read. To avoid one bad video frame, the app averages the model's predictions
   over the last ~0.3 seconds before "Shoot!".
   If a hand was seen in fewer than half of those frames, it counts as "no hand" (R7).
 - **R6** A sign is accepted only if the top class has a confidence of **≥ 70%**.
 - **R7** If no hand is seen, or confidence is < 70%, the round is **redone**:
   a message says why (e.g. "I couldn't see your hand, try again"), and nobody gets a point.
+  (Added 2026-10-13: the redo starts when I press "Play" / Space again, not automatically.)
 - **R8** The computer's move is **random** (each sign has a 1/3 chance), and it is chosen **without looking at my sign**.
 - **R9** When the match ends, the winner is announced. **"Play again"** resets the score and the round history.
 
@@ -27,10 +30,13 @@ Each rule has a number (`R1`, `R2`…). Every v1 rule gets automated tests that 
 - **R10** The webcam preview is shown **mirrored**, like a mirror.
 - **R11** The detected hand **skeleton** (21 points + lines) is drawn on top of the video, live.
 - **R12** **Live prediction bars** show the 3 classes (rock / paper / scissors) with their confidence in %.
+  (Added 2026-10-13: a bar at ≥ 70% (R6) gets the "accepted" color; with no hand, all bars are at 0%
+  and "No hand detected" is shown.)
 - **R13** The **score** (me vs computer) is always visible.
 - **R14** A **round history** lists each round: my sign, the computer's sign, the result (win / loss / tie).
   Redone rounds (R7) are not listed.
 - **R15** Light animations for the countdown and the result reveal. **No sound** in v1.
+  (Added 2026-10-13: if the system asks for reduced motion, the animations are turned off.)
 - **R16** While the AI models load, a loading message is shown and "Play" is disabled.
 
 ## 3. Camera and privacy

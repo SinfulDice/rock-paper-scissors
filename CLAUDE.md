@@ -14,32 +14,26 @@ that **he trains himself** recognizes his hand sign (rock / paper / scissors).
 He is looking for an alternance as **Full Stack** or **Data & AI** developer. This project shows AI
 (training his own model in Python) + web (TS frontend) on his portfolio and GitHub (`SinfulDice`).
 
-## Status (end of 2026-10-07 session)
-- **SPEC.md approved** (R1–R42 + L1–L7). Read it first. Changed today with his OK: 3 classes, no "none"
-  (R6, R7, R12, R22), augmentation (R23), block split against data leakage (R25).
-- **Git:** 3 commits (setup, /collect page, training). Everything committed. Not pushed, no GitHub repo yet.
-- **Done:**
-  - `web/` (Vite + React 19 + TS, Vitest + Testing Library + jsdom, oxlint; portfolio dark colors).
-    Game logic in `web/src/game/` (match rules, computer move, `readSign` = average + 70% threshold).
-    `/collect` page (works, tested by him with his webcam): MediaPipe hand landmarker served from the site,
-    hold Space → ~10 samples/s, download JSON.
-  - `training/` (uv package `rps`, Python 3.12, CPU PyTorch 2.14, onnx, onnxruntime, pytest):
-    `uv run rps-train` loads `training/data/*.json`, normalizes (R20), block split, trains the MLP
-    (63→64→32→3) with augmentation, exports `web/public/models/rps_classifier.onnx` and
-    `web/src/ai/modelInfo.json` (accuracy, confusion matrix, counts for the "About the model" section).
-  - Data: 3 sessions, 660 samples used (rock 206, paper 239, scissors 215). Session 3 = 232 "none"
-    (only a pointing finger), kept for L7 but skipped. Model: **99.2%** test accuracy (93–100% over 4 splits).
-  - Tests: web 54, Python 36, all passing.
-- **Next step: the game screen** (R4–R16, R33): run the ONNX model in the browser with `onnxruntime-web`
-  (serve its wasm from the site like MediaPipe, R17), normalize live landmarks with `web/src/ai/normalize.ts`,
-  live bars, countdown + averaging at "Shoot!", score, history, play again, camera errors (reuse
-  `CameraMessage`), loading state. Then "About the model" (R33), README (R42), GitHub Actions + Pages (R41).
-- After playing: if non-signs are often read as signs → L7 (give him an exact list of "none" poses to record;
-  NOT the fist with thumb out, too close to rock — my earlier bad suggestion).
+## Status (2026-10-13, after webcam test)
+- **SPEC.md approved** (R1–R42 + L1–L7). 2026-10-13: small additions to R4, R7, R12, R15 written by Claude,
+  **confirmed by him on 2026-10-13** (redo needs "Play" again, not automatic; Play disabled during countdown;
+  bar color at ≥ 70%; no animations with reduced motion).
+- **Git:** 5 commits (game screen committed 2026-10-13 after his webcam test: works great).
+  Not pushed, no GitHub repo yet.
+- **Done before:** `web/` (Vite + React 19 + TS, Vitest, oxlint), game logic `web/src/game/`, `/collect` page,
+  `training/` (uv package `rps`, `uv run rps-train` → `web/public/models/rps_classifier.onnx` + `web/src/ai/modelInfo.json`),
+  660 samples, model 99.2% test accuracy. See JOURNAL.md.
+- **Done 2026-10-13 (game screen, R4–R18):** `web/src/ai/classifier.ts` (onnxruntime-web, wasm copied to
+  `public/onnxruntime/` by `scripts/copy-wasm.mjs`; Vite condition `onnxruntime-web-use-extern-wasm`),
+  `web/src/game/game.ts` (reducer), `web/src/play/` (GamePage, PredictionBars, Score/History, play.css).
+  Tests: web 83, Python 36, all passing; lint + build OK. Tried with his webcam: works great; non-signs read as nearest sign (expected), no L7 for now.
+- **Next:** "About the model" (R33, reads modelInfo.json; mention the 3-class limits), LICENSE + README (R42),
+  GitHub Actions + Pages (R41), then create the GitHub repo and push (only with his OK).
+  If wrong signs show up while playing → L7: give him an exact list of "none" poses, NOT the fist with thumb out.
 - Useful facts: uv is in `~/.local/bin` (may need `export PATH="$HOME/.local/bin:$PATH"`); dev server:
   `cd web && npm run dev` → http://localhost:5173/rock-paper-scissors/ (collect: …/collect/);
-  MediaPipe wasm is copied to `web/public/mediapipe/` by `npm install` (postinstall, git-ignored).
-  Tests: `cd web && npm test`, `cd training && uv run pytest`. A test file reads `../shared/normalize_cases.json`.
+  wasm files are copied to `web/public/` by `npm install` (postinstall, git-ignored).
+  Tests: `cd web && npm test`, `cd training && uv run pytest`. Web tests read `../shared/` and `../training/data/`.
 
 ## Working with him
 - He is learning (Python for AI, TypeScript). **Explain the code**, not only the result: what each file

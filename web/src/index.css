@@ -31,3 +31,62 @@ body {
   font-family: var(--font-body);
   line-height: 1.5;
 }
+
+/* ===== Shared by the game and the collect page ===== */
+
+/* The video and the canvas sit exactly on top of each other. */
+.stage {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface);
+  aspect-ratio: 4 / 3;
+}
+.stage video,
+.stage canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* R10: mirror both, like a mirror. The numbers given to the model are NOT mirrored: only the display is. */
+  transform: scaleX(-1);
+}
+.stage-status {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgb(20 18 31 / 0.8);
+  font-size: 0.9rem;
+}
+
+button {
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+kbd {
+  padding: 0 6px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+
+.camera-message {
+  padding: 16px 20px;
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  background: var(--surface);
+}

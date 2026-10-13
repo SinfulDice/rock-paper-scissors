@@ -6,7 +6,7 @@ import { drawHand } from '../ai/drawHand'
 import { createHandTracker, pickHand } from '../ai/handTracker'
 import { cameraErrorKind, openCamera, type CameraError } from '../camera/camera'
 import { CameraMessage } from '../camera/CameraMessage'
-import { RECORD_LABELS, type RecordLabel } from '../game/signs'
+import { RECORD_LABELS, SIGN_LABELS, type RecordLabel } from '../game/signs'
 import { downloadText } from './download'
 import {
   countByClass,
@@ -19,9 +19,7 @@ import {
 
 const GOAL_PER_CLASS = 200 // R26: a target to aim for, not a hard rule
 const LABELS: Record<RecordLabel, string> = {
-  rock: '✊ Rock',
-  paper: '✋ Paper',
-  scissors: '✌️ Scissors',
+  ...SIGN_LABELS, // the 3 signs, same labels as the game
   none: '🤷 None (not used in v1)',
 }
 const CLASS_KEYS = ['Digit1', 'Digit2', 'Digit3', 'Digit4'] // keys 1–4 choose a class

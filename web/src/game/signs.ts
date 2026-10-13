@@ -6,6 +6,13 @@
 export const SIGNS = ['rock', 'paper', 'scissors'] as const
 export type Sign = (typeof SIGNS)[number]
 
+// How each sign is shown on screen. `Record<Sign, string>` = an object with exactly one string per sign.
+export const SIGN_LABELS: Record<Sign, string> = {
+  rock: '✊ Rock',
+  paper: '✋ Paper',
+  scissors: '✌️ Scissors',
+}
+
 // What the model says for one video frame: a confidence between 0 and 1 for each sign
 // (the 3 numbers add up to 1). Example: { rock: 0.9, paper: 0.06, scissors: 0.04 }.
 export type Prediction = Record<Sign, number>

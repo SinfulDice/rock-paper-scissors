@@ -1,0 +1,203 @@
+/* Styles of the game screen. Colors come from the variables in index.css. */
+
+.game {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+.game h1 {
+  margin-bottom: 4px;
+}
+.muted {
+  color: var(--muted);
+}
+.game h2 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  color: var(--muted);
+}
+
+/* Two columns on wide screens (video | panel), one column on narrow ones (R36). */
+.game-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 800px) {
+  .game-layout {
+    grid-template-columns: 1fr;
+  }
+}
+.panel {
+  display: grid;
+  gap: 16px;
+}
+
+/* ===== Countdown on top of the video (R4, R15) ===== */
+.countdown {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: clamp(3rem, 12vw, 7rem);
+  font-weight: 800;
+  color: var(--accent-3);
+  text-shadow: 0 4px 16px rgb(0 0 0 / 0.7);
+  pointer-events: none; /* clicks go through to the page */
+  animation: pop 0.4s ease-out;
+}
+/* "Shoot!" pops, then fades away so the result can be seen. `forwards` keeps the end state. */
+.countdown.shoot {
+  color: var(--accent);
+  animation: pop 0.4s ease-out, fade-out 0.6s ease-in 0.8s forwards;
+}
+@keyframes pop {
+  from {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+/* ===== Score (R13) ===== */
+.score {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+.score > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.score-value {
+  font-size: 2.2rem;
+  font-weight: 800;
+}
+.score-sep {
+  font-size: 1.6rem;
+  color: var(--muted);
+}
+.score-goal {
+  flex-basis: 100%;
+  margin: 0;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* ===== Round message and result reveal (R7, R9, R15) ===== */
+.round-message {
+  min-height: 3.5rem;
+}
+.round-message p {
+  margin: 4px 0;
+}
+.reveal {
+  animation: pop 0.4s ease-out;
+}
+.signs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 1.2rem;
+}
+.result-win {
+  color: var(--accent-2);
+  font-weight: bold;
+}
+.result-loss {
+  color: var(--accent);
+  font-weight: bold;
+}
+.result-tie {
+  color: var(--muted);
+  font-weight: bold;
+}
+.winner {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--accent-3);
+}
+.redo {
+  color: var(--accent-3);
+}
+
+button.primary {
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+button.primary kbd {
+  border-color: var(--on-accent);
+}
+
+/* ===== Live prediction bars (R12) ===== */
+.bar-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.bar-percent {
+  font-variant-numeric: tabular-nums; /* digits all have the same width: no jumping */
+}
+.bar {
+  grid-column: 1 / -1;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  background: var(--muted);
+  transition: width 0.1s linear;
+}
+.bar-fill.sure {
+  background: var(--accent-2);
+}
+
+/* ===== History (R14) ===== */
+.history table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.history th,
+.history td {
+  padding: 4px 6px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+/* People who asked their system for less motion get no animations. */
+@media (prefers-reduced-motion: reduce) {
+  .countdown,
+  .countdown.shoot,
+  .reveal,
+  .bar-fill {
+    animation: none;
+    transition: none;
+  }
+  .countdown.shoot {
+    display: none;
+  }
+}

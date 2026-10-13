@@ -39,3 +39,29 @@
 - Result: **99.2%** test accuracy (93–100% over 4 splits). Python 36 tests, web 54 tests, all passing.
 - Next: the game screen (live predictions in the browser with onnxruntime-web, countdown, score…).
 - End of session. Training work committed (he said yes). Status for next time in CLAUDE.md.
+
+## 2026-10-13
+- Game screen (R4–R18) built, not yet tried with the webcam:
+  - `web/src/ai/classifier.ts`: runs `rps_classifier.onnx` with `onnxruntime-web` 1.30 (wasm, 1 thread),
+    engine served from `public/onnxruntime/` (copied by `scripts/copy-wasm.mjs`, renamed from
+    copy-mediapipe-wasm.mjs). Vite condition `onnxruntime-web-use-extern-wasm` avoids a duplicate 14 MB wasm.
+  - `web/src/game/game.ts`: game state as a reducer (idle / countdown / result / redo), no timers inside.
+  - `web/src/play/`: GamePage (camera + MediaPipe + model loop, countdown timers, Space key),
+    PredictionBars (R12), Score + History (R13, R14), play.css (animations R15, reduced motion).
+  - Shared CSS (stage, buttons, kbd, camera message) moved from collect.css to index.css.
+    Sign labels with emojis moved to `SIGN_LABELS` in signs.ts.
+- SPEC: small additions to R4, R7, R12, R15 (Play disabled during countdown, redo needs Play again,
+  bar color at ≥ 70%, reduced motion).
+- Tests: web 83 (new: classifier with the real ONNX model on the recorded samples, game reducer,
+  game screen with fake AI + fake clock), Python 36. All passing, lint OK, build OK.
+- End of session. Game screen not committed yet (waiting for his webcam test and OK). Status in CLAUDE.md.
+- Later the same day: he confirmed the R4, R7, R12, R15 additions. First try with his webcam:
+  - Bug: in dev, Vite refused to serve `ort-wasm-simd-threaded.mjs` from public/ (it adds `?import` to
+    dynamic imports of paths starting with `/`). Fix in classifier.ts: `wasmPaths` is now a full URL
+    (`new URL(..., location.origin)`), which Vite leaves alone. Tests didn't catch it (they run in Node, not Vite).
+  - Result: works great, his signs are read well, no wrong sign in real games so far.
+  - Non-signs: a hand halfway between paper and rock bounces between the two (< 70%, round redone);
+    pointing → rock/scissors; thumbs up → rock (confident); partly out of frame → nearest sign or no hand.
+    Expected with 3 classes (R22). Decision: no "none" class (L7) for now, he keeps watching while playing.
+    Idea: mention these limits on the "About the model" page (R33).
+  - Game screen committed (he said yes).

@@ -23,5 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 
-# MediaPipe wasm, copied from node_modules by scripts/copy-mediapipe-wasm.mjs
+# MediaPipe and ONNX Runtime wasm, copied from node_modules by scripts/copy-wasm.mjs
 public/mediapipe/
+public/onnxruntime/
